@@ -10,6 +10,7 @@ const url = `${baseUrl}/recipes/complexSearch`;
 function App() {
   const [text, setText] = useState("");
   const [list, setList] = useState<FoodProps[]>([]);
+  const [error, setError] = useState<string>("");
 
   const setInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -19,12 +20,27 @@ function App() {
     const fetchData = async () => {
       if (!text) {
         setList([]);
+        setError("");
         return;
       }
-      const res = await fetch(`${url}?query=${text}&apiKey=${apiKey}`);
-      const data = await res.json();
-      console.log(data);
-      setList(data.results);
+      try {
+        const res = await fetch(`${url}?query=${text}&apiKey=${apiKey}`);
+        const data = await res.json();
+
+        if (data.code === 402 || data.status === "failure") {
+          setError(data.message);
+          setList([]);
+        } else if (data.results) {
+          setList(data.results);
+          setError("");
+        } else {
+          setList([]);
+          setError("");
+        }
+      } catch (error) {
+        setError("Failed to fetch recipes. Please try again.");
+        setList([]);
+      }
     };
     fetchData();
   }, [text]);
@@ -39,7 +55,11 @@ function App() {
         <Search text={text} onChange={setInputValue} />
       </div>
 
-      {list.length > 0 ? (
+      {error ? (
+        <div className="alert alert-danger text-center" role="alert">
+          {error}
+        </div>
+      ) : list.length > 0 ? (
         <div className="row row-cols-1 row-cols-md-3 g-4">
           {list.map((item) => (
             <div className="col" key={item.id}>
