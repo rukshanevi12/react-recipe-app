@@ -1,78 +1,15 @@
-import { useEffect, useState, type ChangeEvent } from "react";
-import Search from "./components/Search";
-import Food from "./components/Food";
-import type { FoodProps } from "./Types/types";
-
-const baseUrl = import.meta.env.VITE_BASE_URL;
-const apiKey = import.meta.env.VITE_API_KEY;
-const url = `${baseUrl}/recipes/complexSearch`;
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import RecipePage from "./pages/RecipePage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
-  const [text, setText] = useState("");
-  const [list, setList] = useState<FoodProps[]>([]);
-  const [error, setError] = useState<string>("");
-
-  const setInputValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!text) {
-        setList([]);
-        setError("");
-        return;
-      }
-      try {
-        const res = await fetch(`${url}?query=${text}&apiKey=${apiKey}`);
-        const data = await res.json();
-
-        if (data.code === 402 || data.status === "failure") {
-          setError(data.message);
-          setList([]);
-        } else if (data.results) {
-          setList(data.results);
-          setError("");
-        } else {
-          setList([]);
-          setError("");
-        }
-      } catch (error) {
-        setError("Failed to fetch recipes. Please try again.");
-        setList([]);
-      }
-    };
-    fetchData();
-  }, [text]);
-
   return (
-    <div className="container py-5">
-      <h1 className="text-center mb-4 text-primary fw-bold">
-        🍽️ Recipe Finder
-      </h1>
-
-      <div className="mb-5">
-        <Search text={text} onChange={setInputValue} />
-      </div>
-
-      {error ? (
-        <div className="alert alert-danger text-center" role="alert">
-          {error}
-        </div>
-      ) : list.length > 0 ? (
-        <div className="row row-cols-1 row-cols-md-3 g-4">
-          {list.map((item) => (
-            <div className="col" key={item.id}>
-              <Food id={item.id} image={item.image} title={item.title} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-muted fs-5">
-          Start typing to search for recipes...
-        </p>
-      )}
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/recipe/:id" element={<RecipePage />} />
+      <Route path="/about" element={<AboutPage />} />
+    </Routes>
   );
 }
 

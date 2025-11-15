@@ -10,7 +10,7 @@ const Search = ({ text, onChange }: searchProps) => {
         type="text"
         value={text}
         onChange={onChange}
-        className="form-control form-control-lg shadow-sm border-primary"
+        className="form-control form-control-lg shadow-sm border-danger"
         placeholder="Search for a recipe..."
       />
     </form>
