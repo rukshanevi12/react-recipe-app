@@ -28,8 +28,7 @@ function HomePage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // If text is empty, search for popular recipes or a default query
-        const query = text || "pasta"; // You can change "pasta" to any default
+        const query = text || "pasta";
 
         const res = await fetch(
           `${url}/complexSearch?query=${query}&number=12&apiKey=${apiKey}`

@@ -58,7 +58,6 @@ const RecipePage = () => {
     <>
       <Nav />
       <div className="container py-5">
-        {/* Back Button */}
         <button onClick={() => navigate(-1)} className="btn btn-dark mb-4">
           <i className="bi bi-arrow-left me-2"></i>
           Back to Search
