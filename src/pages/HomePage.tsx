@@ -31,7 +31,7 @@ function HomePage() {
         const query = text || "pasta";
 
         const res = await fetch(
-          `${url}/complexSearch?query=${query}&number=12&apiKey=${apiKey}`
+          `${url}/complexSearch?query=${query}&number=50&apiKey=${apiKey}`
         );
         const data = await res.json();
 
@@ -74,7 +74,7 @@ function HomePage() {
             {error}
           </div>
         ) : list.length > 0 ? (
-          <div className="row row-cols-1 row-cols-md-3 g-4">
+          <div className="row row-cols-1 row-cols-md-4 g-4">
             {list.map((item) => (
               <div className="col" key={item.id}>
                 <Food
