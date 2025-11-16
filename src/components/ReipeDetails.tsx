@@ -160,7 +160,7 @@ const ReipeDetails = ({ recipe }: { recipe: RecipeProps[] }) => {
                   <div className="text-muted small">Cooking Time</div>
                   <div className="fs-4 fw-bold text-danger">
                     {currentRecipe.cookingMinutes &&
-                    currentRecipe.cookingMinutes > 0
+                    Number(currentRecipe.cookingMinutes) > 0
                       ? `${currentRecipe.cookingMinutes} min`
                       : "Not specified"}
                   </div>
